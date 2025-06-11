@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 260 25% 11%;
+    --foreground: 0 0% 98%;
+
+    --card: 260 25% 11%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 260 25% 11%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 265 89% 78%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 260 32% 15%;
+    --secondary-foreground: 240 5% 64.9%;
+
+    --muted: 260 32% 15%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 265 89% 78%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 260 15% 20%;
+    --input: 260 15% 20%;
+    --ring: 265 89% 78%;
+
+    --radius: 0.5rem;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 260 25% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 260 25% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 25% 11%;
+
+    --primary: 265 89% 78%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 260 4.8% 95.9%;
+    --secondary-foreground: 260 5.9% 10%;
+
+    --muted: 260 4.8% 95.9%;
+    --muted-foreground: 260 3.8% 46.1%;
+
+    --accent: 265 89% 78%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 260 5.9% 90%;
+    --input: 260 5.9% 90%;
+    --ring: 260 10% 3.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl font-extrabold md:text-5xl lg:text-6xl;
+  }
+  h2 {
+    @apply text-3xl font-bold md:text-4xl;
+  }
+  h3 {
+    @apply text-2xl font-bold md:text-3xl;
+  }
+  h4 {
+    @apply text-xl font-bold md:text-2xl;
+  }
+}
+
+.gradient-text {
+  @apply text-4xl md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-purple-300;
+}
+
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradient-animation 3s ease infinite;
+  background-image: linear-gradient(45deg, #4c1d95 0%, #7c3aed 50%, #4c1d95 100%);
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+:root {
+  --purple-dark: #4c1d95;
+  --purple-base: #7c3aed;
+  --purple-light: #a78bfa;
+  --purple-bg: #1e1b4b;
+  --purple-card: #2e1065;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 后期处理页面样式 */
+.postprocessing-title {
+  @apply text-3xl md:text-4xl font-bold text-white mb-4;
+}
+
+.postprocessing-subtitle {
+  @apply text-2xl md:text-3xl font-semibold text-white/90 mb-3;
+}
+
+.postprocessing-section-title {
+  @apply text-xl md:text-2xl font-medium text-white/90 mb-2;
+}
+
+.postprocessing-text {
+  @apply text-base text-white/80 leading-relaxed;
+}
+
+@layer components {
+  .postprocessing-card {
+    @apply border border-purple-600/50 bg-white/30 backdrop-blur-sm hover:bg-white/40 transition-colors text-purple-950;
+  }
+
+  .postprocessing-card-dark {
+    @apply border border-purple-500/40 bg-black/40 backdrop-blur-sm;
+  }
+}
+
+/* 亮色模式下的文本颜色修正 */
+.light .postprocessing-title {
+  @apply text-purple-900;
+}
+
+.light .postprocessing-text {
+  @apply text-purple-950;
+}
+
+.light .gradient-text {
+  @apply bg-gradient-to-r from-purple-800 to-purple-600;
+} 
