@@ -164,6 +164,229 @@ const cameraData: Camera[] = [
   },
 ];
 
+// 镜头数据（模拟数据）
+const lensData = [
+  {
+    model: "Sony 24-70mm f/2.8 GM II",
+    specs: {
+      type: "标准变焦",
+      focalLength: "24-70mm",
+      aperture: "f/2.8 恒定光圈",
+      weight: "695g",
+      stabilization: "无",
+      price: 15999,
+    },
+    ratings: [9, 8, 8, 9, 7, 8, 9, 8, 7, 9],
+    sampleImage: "/images/gear/sample-lens-1.jpg",
+    pros: ["优秀的锐度", "紧凑轻量设计", "快速精准的对焦", "出色的防抖效果"],
+    cons: ["价格较高", "没有内置防抖", "焦外成像可能不如预期"],
+  },
+  {
+    model: "Canon RF 70-200mm f/2.8L IS USM",
+    specs: {
+      type: "长焦变焦",
+      focalLength: "70-200mm",
+      aperture: "f/2.8 恒定光圈",
+      weight: "1070g",
+      stabilization: "5级防抖",
+      price: 17999,
+    },
+    ratings: [9, 9, 9, 8, 7, 9, 7, 9, 9, 8],
+    sampleImage: "/images/gear/sample-lens-2.jpg",
+    pros: ["出色的锐度", "紧凑设计", "强大的图像稳定", "华丽的散景效果"],
+    cons: ["价格昂贵", "重量仍然可观", "伸缩式设计"],
+  },
+  {
+    model: "Sigma 35mm f/1.4 DG DN Art",
+    specs: {
+      type: "标准定焦",
+      focalLength: "35mm",
+      aperture: "f/1.4",
+      weight: "640g",
+      stabilization: "无",
+      price: 5999,
+    },
+    ratings: [9, 9, 7, 8, 8, 6, 8, 8, 6, 10],
+    sampleImage: "/images/gear/sample-lens-3.jpg",
+    pros: ["极佳的锐度", "出色的散景", "精确的对焦", "优秀的性价比"],
+    cons: ["没有防抖", "体积较大", "对比度有时过高"],
+  },
+  {
+    model: "Tamron 28-75mm f/2.8 Di III VXD G2",
+    specs: {
+      type: "标准变焦",
+      focalLength: "28-75mm",
+      aperture: "f/2.8 恒定光圈",
+      weight: "540g",
+      stabilization: "无",
+      price: 5999,
+    },
+    ratings: [8, 7, 8, 8, 9, 7, 9, 7, 7, 10],
+    sampleImage: "/images/gear/sample-lens-4.jpg",
+    pros: ["卓越的性价比", "轻量紧凑", "优秀的锐度", "快速准确的对焦"],
+    cons: ["焦段比标准28-70稍窄", "防尘防滴不如原厂", "散景不如高端镜头"],
+  },
+];
+
+// 闪光灯数据（模拟数据）
+const flashData = [
+  {
+    model: "Godox V1",
+    specs: {
+      type: "圆头锂电闪光灯",
+      guide: "GN60（ISO 100, 200mm）",
+      recycle: "1.5秒",
+      wireless: "2.4G无线收发",
+      battery: "锂电池，可拍摄约480次",
+      price: 1799,
+    },
+    ratings: [8, 8, 9, 9, 9, 8, 9],
+    sampleImage: "/images/gear/sample-flash-1.jpg",
+    pros: ["圆头设计提供自然光效", "磁吸式附件系统", "快速回电", "内置无线触发器"],
+    cons: ["相对原厂稍重", "闪光覆盖不均匀", "高速同步下功率损失"],
+  },
+  {
+    model: "Profoto A1X",
+    specs: {
+      type: "圆头锂电闪光灯",
+      guide: "GN76（ISO 100, 105mm）",
+      recycle: "1秒",
+      wireless: "AirTTL无线系统",
+      battery: "锂电池，可拍摄约450次",
+      price: 4999,
+    },
+    ratings: [9, 9, 8, 9, 8, 7, 7],
+    sampleImage: "/images/gear/sample-flash-2.jpg",
+    pros: ["出色的光质", "简洁直观的界面", "良好的闪光一致性", "兼容Profoto灯具"],
+    cons: ["价格昂贵", "电池续航一般", "重量较大"],
+  },
+  {
+    model: "Canon 600EX II-RT",
+    specs: {
+      type: "传统闪光灯",
+      guide: "GN60（ISO 100, 200mm）",
+      recycle: "1.8秒",
+      wireless: "光学与无线电触发",
+      battery: "4节AA电池，约400次",
+      price: 3199,
+    },
+    ratings: [8, 7, 8, 8, 7, 7, 6],
+    sampleImage: "/images/gear/sample-flash-3.jpg",
+    pros: ["可靠的性能", "广泛的覆盖范围", "强大的无线控制", "原厂品质"],
+    cons: ["价格较高", "重量大", "界面复杂", "使用AA电池"],
+  },
+];
+
+// 三脚架数据（模拟数据）
+const tripodData = [
+  {
+    model: "曼富图 MT055XPRO3",
+    specs: {
+      material: "铝合金",
+      maxHeight: "170cm",
+      minHeight: "9cm",
+      foldedLength: "61cm",
+      weight: "2.5kg",
+      maxLoad: "9kg",
+      price: 1399,
+    },
+    ratings: [9, 8, 7, 7, 6, 8, 9, 8],
+    sampleImage: "/images/gear/sample-tripod-1.jpg",
+    pros: ["极其稳定", "易于操作的锁定系统", "创新的中轴设计", "多角度腿部调节"],
+    cons: ["较重", "折叠后体积较大", "价格不低"],
+  },
+  {
+    model: "碳云 CT-5C",
+    specs: {
+      material: "碳纤维",
+      maxHeight: "165cm",
+      minHeight: "12cm",
+      foldedLength: "53cm",
+      weight: "1.4kg",
+      maxLoad: "12kg",
+      price: 2699,
+    },
+    ratings: [8, 9, 9, 9, 9, 7, 7, 8],
+    sampleImage: "/images/gear/sample-tripod-2.jpg",
+    pros: ["超轻碳纤维构造", "优秀的承重能力", "紧凑折叠设计", "优质的旋转锁"],
+    cons: ["价格较高", "低温下锁定不牢", "附带云台一般"],
+  },
+  {
+    model: "思锐 T-2205X",
+    specs: {
+      material: "碳纤维",
+      maxHeight: "142cm",
+      minHeight: "31cm",
+      foldedLength: "41cm",
+      weight: "1.1kg",
+      maxLoad: "8kg",
+      price: 899,
+    },
+    ratings: [7, 7, 8, 9, 10, 6, 7, 9],
+    sampleImage: "/images/gear/sample-tripod-3.jpg",
+    pros: ["性价比极高", "轻量便携", "快速部署", "足够的稳定性"],
+    cons: ["最大高度有限", "阻尼调节不精确", "最低高度不理想"],
+  },
+];
+
+// 配件数据（模拟数据）
+const accessoryData = [
+  {
+    model: "飞思 X100 V6滤镜系统",
+    specs: {
+      type: "方形滤镜系统",
+      compatibility: "广泛兼容",
+      filterSize: "100mm方形",
+      material: "航空铝合金",
+      includesFilters: "ND1000, GND8, CPL",
+      price: 3299,
+    },
+    ratings: [9, 8, 9, 8, 7, 7],
+    sampleImage: "/images/gear/sample-accessory-1.jpg",
+    pros: ["高质量光学玻璃", "几乎无色偏", "防漏光设计", "坚固耐用"],
+    cons: ["价格高", "体积较大", "需要适配环"],
+  },
+  {
+    model: "PeakDesign 旅行者背包 20L",
+    specs: {
+      type: "相机背包",
+      capacity: "20升",
+      cameraFit: "1机3镜",
+      laptop: "最大15英寸",
+      material: "尼龙防水面料",
+      price: 1899,
+    },
+    ratings: [9, 9, 8, 9, 10, 7],
+    sampleImage: "/images/gear/sample-accessory-2.jpg",
+    pros: ["模块化设计", "高质量材料", "防水耐用", "人体工学设计"],
+    cons: ["价格高", "重量略重", "配件需单独购买"],
+  },
+  {
+    model: "Zhiyun Crane M3",
+    specs: {
+      type: "相机稳定器",
+      maxLoad: "2kg",
+      battery: "7.5小时",
+      weight: "700g",
+      features: "内置补光灯,多轴锁定",
+      price: 2199,
+    },
+    ratings: [8, 9, 8, 8, 9, 8],
+    sampleImage: "/images/gear/sample-accessory-3.jpg",
+    pros: ["紧凑便携", "稳定性好", "内置补光灯", "直观控制"],
+    cons: ["负载能力有限", "充电时间长", "配重过程繁琐"],
+  },
+];
+
+// 设备数据映射
+const equipmentData = {
+  cameras: cameraData,
+  lenses: lensData,
+  flashes: flashData,
+  tripods: tripodData,
+  accessories: accessoryData
+};
+
 export function EquipmentComparatorModule() {
   const [category, setCategory] = useState<EquipmentCategory>("cameras");
   const [selectedModels, setSelectedModels] = useState<string[]>(["Sony A7IV", "Canon R6"]);
@@ -478,12 +701,79 @@ export function EquipmentComparatorModule() {
             </div>
           )}
           
-          {/* 其他类别的选择（在实际项目中完成） */}
-          {category !== "cameras" && (
-            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-lg p-6 text-center">
-              <p className="text-muted-foreground">
-                该类别的数据正在整理中，敬请期待...
-              </p>
+          {category === "lenses" && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {lensData.map(lens => (
+                <button
+                  key={lens.model}
+                  onClick={() => toggleModelSelection(lens.model)}
+                  className={`p-3 border rounded-lg transition-all ${
+                    selectedModels.includes(lens.model)
+                      ? "border-primary bg-primary/10"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <div className="font-medium">{lens.model}</div>
+                  <div className="text-sm text-muted-foreground mt-1">¥{lens.specs.price.toLocaleString()}</div>
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {category === "flashes" && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {flashData.map(flash => (
+                <button
+                  key={flash.model}
+                  onClick={() => toggleModelSelection(flash.model)}
+                  className={`p-3 border rounded-lg transition-all ${
+                    selectedModels.includes(flash.model)
+                      ? "border-primary bg-primary/10"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <div className="font-medium">{flash.model}</div>
+                  <div className="text-sm text-muted-foreground mt-1">¥{flash.specs.price.toLocaleString()}</div>
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {category === "tripods" && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {tripodData.map(tripod => (
+                <button
+                  key={tripod.model}
+                  onClick={() => toggleModelSelection(tripod.model)}
+                  className={`p-3 border rounded-lg transition-all ${
+                    selectedModels.includes(tripod.model)
+                      ? "border-primary bg-primary/10"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <div className="font-medium">{tripod.model}</div>
+                  <div className="text-sm text-muted-foreground mt-1">¥{tripod.specs.price.toLocaleString()}</div>
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {category === "accessories" && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {accessoryData.map(accessory => (
+                <button
+                  key={accessory.model}
+                  onClick={() => toggleModelSelection(accessory.model)}
+                  className={`p-3 border rounded-lg transition-all ${
+                    selectedModels.includes(accessory.model)
+                      ? "border-primary bg-primary/10"
+                      : "border-border hover:border-primary/50"
+                  }`}
+                >
+                  <div className="font-medium">{accessory.model}</div>
+                  <div className="text-sm text-muted-foreground mt-1">¥{accessory.specs.price.toLocaleString()}</div>
+                </button>
+              ))}
             </div>
           )}
         </div>

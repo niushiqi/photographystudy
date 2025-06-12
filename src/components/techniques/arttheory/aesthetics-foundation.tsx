@@ -2,7 +2,10 @@
 
 import { motion } from "framer-motion";
 import { TheoryCard } from "./shared/theory-card";
+import { IllustratedTheoryCard } from "./shared/illustrated-theory-card";
 import { ConceptComparison } from "./shared/concept-comparison";
+import { ImageGallery } from "./shared/image-gallery";
+import { aestheticsImages, aestheticSchoolsImages, visualLanguageImages } from "./shared/art-images";
 
 export function AestheticsFoundation() {
   const aestheticConcepts = [
@@ -81,58 +84,79 @@ export function AestheticsFoundation() {
         className="mb-12"
       >
         <h2 className="text-3xl font-bold mb-6">摄影美学基础理论</h2>
-        <p className="text-lg text-muted-foreground mb-8">
-          摄影美学关注影像的艺术表达和审美价值，探讨摄影如何通过独特的视觉语言传达美感和意义。
-          理解摄影美学的基本原理，有助于我们欣赏和创作更具艺术性的作品。
-        </p>
+        <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="md:w-2/3">
+            <p className="text-lg text-muted-foreground mb-4">
+              摄影美学关注影像的艺术表达和审美价值，探讨摄影如何通过独特的视觉语言传达美感和意义。
+              理解摄影美学的基本原理，有助于我们欣赏和创作更具艺术性的作品。
+            </p>
+            <p className="text-lg text-muted-foreground">
+              无论是探索形式美学的构图原则，还是研究作品的内容表达，摄影美学为我们提供了理解和评价摄影作品的框架和视角。
+            </p>
+          </div>
+          <div className="md:w-1/3 h-64 relative rounded-lg overflow-hidden shadow-lg">
+            <motion.div
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.2 }}
+              className="w-full h-full"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=1024&auto=format&fit=crop" 
+                alt="摄影美学概念图" 
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
 
       <section className="mb-16">
         <h3 className="text-2xl font-bold mb-6">摄影的美学维度</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <TheoryCard
-            title="形式美学"
-            description="关注画面构成的形式元素，如线条、形状、光影、色彩等视觉要素的组织和平衡。形式美学强调画面的视觉节奏和结构，以及这些元素如何引导观者的视线和情感体验。"
-            delay={1}
-          />
-          <TheoryCard
-            title="内容美学"
-            description="聚焦于摄影作品所呈现的主题和内容，以及其所传达的情感、思想和社会意义。内容美学认为好的摄影作品应该超越纯粹的视觉愉悦，具有思想深度和人文关怀。"
-            delay={2}
-          />
-          <TheoryCard
-            title="表现美学"
-            description="探讨摄影师如何通过个人独特的视角和表现手法，传达其对世界的主观感受和理解。表现美学强调摄影师的创作意图和个人风格对作品最终呈现的重要性。"
-            delay={3}
-          />
-          <TheoryCard
-            title="情境美学"
-            description="考察摄影作品在特定历史、文化和社会语境中的意义。情境美学认为摄影作品的理解和欣赏不能脱离其创作和观看的具体环境，强调作品与语境的互动关系。"
-            delay={4}
-          />
-          <TheoryCard
-            title="过程美学"
-            description="关注摄影创作的过程和方法，而非仅仅是最终成像。过程美学认为摄影的美感部分源自其独特的工艺过程和摄影师与被摄对象之间的互动关系。"
-            delay={5}
-          />
-          <TheoryCard
-            title="接受美学"
-            description="研究观者如何感知和解读摄影作品。接受美学强调观看者在作品意义生成过程中的主动参与，认为摄影作品的意义并非固定不变，而是在观看过程中不断重构。"
-            delay={6}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {aestheticsImages.map((image, index) => (
+            <IllustratedTheoryCard
+              key={index}
+              title={image.title}
+              description={image.description}
+              imageSrc={image.src}
+              imageAlt={image.alt}
+              delay={index + 1}
+            />
+          ))}
         </div>
       </section>
 
       <section className="mb-16">
         <h3 className="text-2xl font-bold mb-6">摄影美学的历史流派</h3>
+        <div className="mb-8">
+          <ImageGallery 
+            images={aestheticSchoolsImages} 
+            columns={4}
+          />
+        </div>
         <ConceptComparison concepts={aestheticConcepts} />
       </section>
 
       <section className="mb-16">
         <h3 className="text-2xl font-bold mb-6">摄影的形式语言</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div className="bg-accent/10 rounded-lg p-6">
             <h4 className="text-xl font-medium mb-4">视觉元素</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+              {visualLanguageImages.slice(0, 2).map((image, index) => (
+                <div key={index} className="relative aspect-video rounded-md overflow-hidden group">
+                  <img 
+                    src={image.src} 
+                    alt={image.alt} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+                    <p className="text-white text-sm font-medium">{image.title} - {image.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
@@ -166,6 +190,16 @@ export function AestheticsFoundation() {
           </div>
           <div className="bg-accent/10 rounded-lg p-6">
             <h4 className="text-xl font-medium mb-4">组织原则</h4>
+            <div className="aspect-video relative rounded-md overflow-hidden mb-4">
+              <img 
+                src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=1024&auto=format&fit=crop" 
+                alt="摄影构图原则示例" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-sm">摄影作品中视觉元素的组织与平衡</p>
+              </div>
+            </div>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
@@ -202,45 +236,58 @@ export function AestheticsFoundation() {
 
       <section className="mb-12">
         <h3 className="text-2xl font-bold mb-6">美学理论在实践中的应用</h3>
-        <div className="bg-gradient-to-r from-purple-900/20 to-purple-700/10 rounded-lg p-6">
-          <h4 className="text-xl font-medium mb-4">如何培养摄影美学感知</h4>
-          <ol className="space-y-4">
-            <li className="flex">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">1</span>
-              <div>
-                <p className="font-medium">广泛欣赏摄影作品</p>
-                <p className="text-sm text-muted-foreground mt-1">定期观看不同风格、流派和时期的摄影作品，培养视觉敏感性和审美参照系。重点关注经典摄影师的作品集和重要摄影展览。</p>
-              </div>
-            </li>
-            <li className="flex">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">2</span>
-              <div>
-                <p className="font-medium">学习形式分析方法</p>
-                <p className="text-sm text-muted-foreground mt-1">练习分析摄影作品的形式元素和构成原则，理解画面的视觉结构和元素关系。尝试用语言描述作品的视觉特征和组织逻辑。</p>
-              </div>
-            </li>
-            <li className="flex">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">3</span>
-              <div>
-                <p className="font-medium">理解历史和文化语境</p>
-                <p className="text-sm text-muted-foreground mt-1">将摄影作品放在其历史、文化和社会背景中理解，认识不同时期和地区的美学观念和视觉传统。关注摄影与其他艺术形式的关联。</p>
-              </div>
-            </li>
-            <li className="flex">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">4</span>
-              <div>
-                <p className="font-medium">进行美学实验</p>
-                <p className="text-sm text-muted-foreground mt-1">在自己的摄影实践中有意识地应用不同的美学原则和表现手法，观察和分析效果。尝试以特定的美学理念或风格为指导进行创作。</p>
-              </div>
-            </li>
-            <li className="flex">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">5</span>
-              <div>
-                <p className="font-medium">接受多元的审美观念</p>
-                <p className="text-sm text-muted-foreground mt-1">保持开放的心态，接触和理解不同文化和传统中的美学观念。避免用单一标准评判所有作品，欣赏多样化的表达方式和审美取向。</p>
-              </div>
-            </li>
-          </ol>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="relative rounded-lg overflow-hidden aspect-square">
+            <img 
+              src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?q=80&w=1024&auto=format&fit=crop" 
+              alt="摄影美学实践案例" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent/20 flex flex-col justify-end p-6">
+              <h4 className="text-white text-xl font-bold mb-2">美学原则的实际运用</h4>
+              <p className="text-white/90 text-sm">将理论知识转化为实际拍摄技巧，创作出具有视觉冲击力和艺术表现力的作品</p>
+            </div>
+          </div>
+          <div className="bg-gradient-to-r from-purple-900/20 to-purple-700/10 rounded-lg p-6">
+            <h4 className="text-xl font-medium mb-4">如何培养摄影美学感知</h4>
+            <ol className="space-y-4">
+              <li className="flex">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">1</span>
+                <div>
+                  <p className="font-medium">广泛欣赏摄影作品</p>
+                  <p className="text-sm text-muted-foreground mt-1">定期观看不同风格、流派和时期的摄影作品，培养视觉敏感性和审美参照系。重点关注经典摄影师的作品集和重要摄影展览。</p>
+                </div>
+              </li>
+              <li className="flex">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">2</span>
+                <div>
+                  <p className="font-medium">学习形式分析方法</p>
+                  <p className="text-sm text-muted-foreground mt-1">练习分析摄影作品的形式元素和构成原则，理解画面的视觉结构和元素关系。尝试用语言描述作品的视觉特征和组织逻辑。</p>
+                </div>
+              </li>
+              <li className="flex">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">3</span>
+                <div>
+                  <p className="font-medium">理解历史和文化语境</p>
+                  <p className="text-sm text-muted-foreground mt-1">将摄影作品放在其历史、文化和社会背景中理解，认识不同时期和地区的美学观念和视觉传统。关注摄影与其他艺术形式的关联。</p>
+                </div>
+              </li>
+              <li className="flex">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">4</span>
+                <div>
+                  <p className="font-medium">进行美学实验</p>
+                  <p className="text-sm text-muted-foreground mt-1">在自己的摄影实践中有意识地应用不同的美学原则和表现手法，观察和分析效果。尝试以特定的美学理念或风格为指导进行创作。</p>
+                </div>
+              </li>
+              <li className="flex">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">5</span>
+                <div>
+                  <p className="font-medium">接受多元的审美观念</p>
+                  <p className="text-sm text-muted-foreground mt-1">保持开放的心态，接触和理解不同文化和传统中的美学观念。避免用单一标准评判所有作品，欣赏多样化的表达方式和审美取向。</p>
+                </div>
+              </li>
+            </ol>
+          </div>
         </div>
       </section>
     </div>

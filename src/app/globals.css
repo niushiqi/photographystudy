@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 导入技术页面样式 */
+@import "../styles/techniques.css";
+
 @layer base {
   :root {
     --background: 260 25% 11%;

@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Timeline } from "./shared/timeline";
+import { ImageGallery } from "./shared/image-gallery";
+import { historyImages } from "./shared/art-images";
 
 export function PhotographyHistory() {
   const photographyEras = [
@@ -216,173 +218,257 @@ export function PhotographyHistory() {
         className="mb-12"
       >
         <h2 className="text-3xl font-bold mb-6">摄影史与思潮</h2>
-        <p className="text-lg text-muted-foreground mb-8">
-          摄影的历史不仅是技术进步的历程，更是艺术思想、社会变革和文化发展的见证。
-          了解摄影史与重要思潮，有助于我们理解摄影艺术的根源和可能性，为自己的创作寻找历史坐标。
-        </p>
+        <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="md:w-2/3">
+            <p className="text-lg text-muted-foreground mb-4">
+              从19世纪初的早期实验到当代数字革命，摄影的历史是技术创新与艺术探索相互交织的历程。
+              了解这一演变过程，有助于我们理解摄影的本质、可能性与局限，以及它与社会文化的深刻联系。
+            </p>
+            <p className="text-lg text-muted-foreground">
+              通过探索不同时期的摄影流派、风格和理念，我们可以建立对摄影发展的全面认识，
+              并从历史经验中汲取灵感，指导自己的创作实践。
+            </p>
+          </div>
+          <div className="md:w-1/3 h-64 relative rounded-lg overflow-hidden shadow-lg">
+            <motion.div
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.2 }}
+              className="w-full h-full"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1024&auto=format&fit=crop" 
+                alt="摄影历史概念图" 
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
 
-      <section className="mb-10">
-        <div className="bg-gradient-to-r from-purple-900/20 to-purple-700/10 rounded-lg p-6 mb-12">
-          <h3 className="text-xl font-bold mb-4">摄影史的多重维度</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h4 className="font-medium mb-2">技术史维度</h4>
-              <p className="text-sm text-muted-foreground">
-                从最早的银版摄影到数字影像，摄影技术的演进持续改变着影像创作的可能性。
-                每一次技术突破都为摄影师提供了新的表现工具，同时也挑战着人们对摄影本质的理解。
-              </p>
+      <section className="mb-16">
+        <h3 className="text-2xl font-bold mb-6">摄影技术的起源</h3>
+        <div className="mb-8">
+          <ImageGallery 
+            images={historyImages.slice(0, 3)} 
+            columns={3}
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-accent/10 rounded-lg p-6">
+            <h4 className="text-xl font-medium mb-4">暗箱与早期光学</h4>
+            <p className="text-muted-foreground mb-4">
+              摄影技术的起源可以追溯到暗箱（Camera Obscura）的使用，早在古希腊时期，亚里士多德就已经观察到这一现象。
+              文艺复兴时期，暗箱被艺术家广泛用作绘画辅助工具，为后来的摄影技术奠定了光学基础。
+            </p>
+            <div className="aspect-video relative rounded-md overflow-hidden">
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Camera_obscura.jpg" 
+                alt="暗箱原理图" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-sm">暗箱原理图 - 摄影技术的光学前身</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-medium mb-2">艺术史维度</h4>
-              <p className="text-sm text-muted-foreground">
-                摄影与其他艺术形式的互动和对话，从早期模仿绘画到发展出独特的视觉语言。
-                摄影艺术的发展历程反映了更广泛的艺术思潮变迁，同时也重塑了视觉艺术的边界。
-              </p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">社会史维度</h4>
-              <p className="text-sm text-muted-foreground">
-                摄影作为记录和表达工具，与社会变革和历史事件紧密相连。
-                不同时期的摄影实践反映了当时的社会价值观、政治气候和文化语境，同时也积极参与了社会变革。
-              </p>
+          </div>
+          <div className="bg-accent/10 rounded-lg p-6">
+            <h4 className="text-xl font-medium mb-4">早期感光材料</h4>
+            <p className="text-muted-foreground mb-4">
+              摄影技术的另一关键突破是感光材料的发现与改进。从尼埃普斯的沥青涂料，到达盖尔的银版，
+              再到塔尔博特的卡罗型纸质负片，感光材料的进化极大地提高了摄影的实用性和艺术可能性。
+            </p>
+            <div className="aspect-video relative rounded-md overflow-hidden">
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Susse_Fr%C3%A8re_Daguerreotype_camera.png" 
+                alt="早期达盖尔相机" 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-sm">早期达盖尔相机 - 摄影技术的重要里程碑</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <section className="mb-16">
-        <h3 className="text-2xl font-bold mb-8">摄影发展时间线</h3>
+        <h3 className="text-2xl font-bold mb-6">摄影的历史演变</h3>
         <Timeline eras={photographyEras} />
       </section>
 
       <section className="mb-16">
-        <h3 className="text-2xl font-bold mb-6">摄影的范式转变</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div className="bg-accent/10 rounded-lg p-6">
-            <h4 className="text-xl font-medium mb-4">从记录到表达</h4>
-            <p className="text-sm mb-4">
-              摄影最初被视为客观记录现实的工具，摄影师的角色类似于"透明窗口"。随着时间推移，摄影师的主观表达和个人视角逐渐被重视，摄影被视为一种创造性媒介而非纯粹的记录工具。
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span>客观记录</span>
-                <span>主观表达</span>
-              </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-400 to-purple-600 h-full rounded-full" style={{ width: "100%" }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>早期纪实摄影</span>
-                <span>现代艺术摄影</span>
-              </div>
-            </div>
+        <h3 className="text-2xl font-bold mb-6">20世纪现代主义摄影</h3>
+        <div className="mb-8">
+          <ImageGallery 
+            images={historyImages.slice(2, 5)} 
+            columns={3}
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-gradient-to-r from-purple-900/20 to-purple-700/10 rounded-lg p-6">
+            <h4 className="text-xl font-medium mb-4">现代主义摄影的特点</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">1</span>
+                <div>
+                  <p className="font-medium">形式创新</p>
+                  <p className="text-sm text-muted-foreground mt-1">强调摄影的形式元素，如构图、光影、质感等，探索摄影媒介特有的表现可能性。</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">2</span>
+                <div>
+                  <p className="font-medium">主观表达</p>
+                  <p className="text-sm text-muted-foreground mt-1">从客观记录转向主观表达，强调摄影师的个人视角和创作意图。</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">3</span>
+                <div>
+                  <p className="font-medium">媒介纯粹性</p>
+                  <p className="text-sm text-muted-foreground mt-1">追求摄影的纯粹性，强调其区别于其他艺术形式的独特特质。</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">4</span>
+                <div>
+                  <p className="font-medium">社会关注</p>
+                  <p className="text-sm text-muted-foreground mt-1">关注社会现实和人文主题，将摄影作为社会见证和批评的工具。</p>
+                </div>
+              </li>
+            </ul>
           </div>
-          
-          <div className="bg-accent/10 rounded-lg p-6">
-            <h4 className="text-xl font-medium mb-4">从稀缺到泛滥</h4>
-            <p className="text-sm mb-4">
-              摄影初期，图像的创作和复制都是昂贵且复杂的过程，每张照片都珍贵稀有。数字技术和网络的发展使影像创作成本几乎为零，导致图像泛滥，改变了人们对摄影的价值认知和使用方式。
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span>影像稀缺</span>
-                <span>影像泛滥</span>
-              </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-400 to-purple-600 h-full rounded-full" style={{ width: "100%" }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>胶片时代</span>
-                <span>社交媒体时代</span>
-              </div>
-            </div>
+          <div className="bg-gradient-to-r from-purple-900/20 to-purple-700/10 rounded-lg p-6">
+            <h4 className="text-xl font-medium mb-4">重要流派与代表人物</h4>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">1</span>
+                <div>
+                  <p className="font-medium">照相分离派</p>
+                  <p className="text-sm text-muted-foreground mt-1">阿尔弗雷德·斯蒂格利兹、爱德华·斯泰肯等人致力于将摄影提升为艺术形式，强调主观表达和艺术效果。</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">2</span>
+                <div>
+                  <p className="font-medium">直接摄影</p>
+                  <p className="text-sm text-muted-foreground mt-1">保罗·斯特兰德、安塞尔·亚当斯等人提倡直接、清晰的影像表达，强调摄影的客观记录特性。</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">3</span>
+                <div>
+                  <p className="font-medium">纪实摄影</p>
+                  <p className="text-sm text-muted-foreground mt-1">多萝西娅·兰格、沃克·埃文斯等人记录社会现实，特别是大萧条时期的美国社会，强调摄影的社会功能。</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center mr-3">4</span>
+                <div>
+                  <p className="font-medium">超现实主义摄影</p>
+                  <p className="text-sm text-muted-foreground mt-1">曼·雷、布拉萨伊等人探索潜意识和梦境世界，使用多重曝光、暗房操作等技术创造超现实效果。</p>
+                </div>
+              </li>
+            </ul>
           </div>
-          
-          <div className="bg-accent/10 rounded-lg p-6">
-            <h4 className="text-xl font-medium mb-4">从真实到构建</h4>
-            <p className="text-sm mb-4">
-              摄影长期被视为"真实的指示物"，具有天然的证据性。后现代理论和数字技术的发展挑战了这一假设，使人们认识到所有影像都是构建的，摄影的真实性变得复杂且具有争议。
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span>信任真实</span>
-                <span>质疑构建</span>
-              </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-400 to-purple-600 h-full rounded-full" style={{ width: "100%" }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>摄影即证据</span>
-                <span>摄影即解释</span>
-              </div>
+        </div>
+      </section>
+
+      <section className="mb-16">
+        <h3 className="text-2xl font-bold mb-6">当代摄影趋势</h3>
+        <div className="mb-8">
+          <ImageGallery 
+            images={historyImages.slice(3, 6)} 
+            columns={3}
+          />
+        </div>
+        <div className="bg-accent/10 rounded-lg p-6 mb-8">
+          <h4 className="text-xl font-medium mb-4">当代摄影的主要趋势</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="border border-purple-200/20 rounded-lg p-4">
+              <h5 className="font-medium mb-2 text-purple-600">数字技术革命</h5>
+              <p className="text-sm text-muted-foreground">
+                数字相机和图像处理软件的普及彻底改变了摄影实践，使图像的创作、编辑和分享变得空前便利，
+                同时也引发了对摄影真实性的重新思考和辩论。
+              </p>
             </div>
-          </div>
-          
-          <div className="bg-accent/10 rounded-lg p-6">
-            <h4 className="text-xl font-medium mb-4">从专业到普及</h4>
-            <p className="text-sm mb-4">
-              摄影最初是少数专业人士的领域，需要专业知识和设备。随着相机的简化和普及，特别是智能手机的出现，摄影成为日常活动，摄影师身份的边界变得模糊，公民摄影和参与式文化兴起。
-            </p>
-            <div className="space-y-2">
-              <div className="flex justify-between text-xs">
-                <span>专业领域</span>
-                <span>大众实践</span>
-              </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-purple-400 to-purple-600 h-full rounded-full" style={{ width: "100%" }}></div>
-              </div>
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>专业摄影师</span>
-                <span>人人都是创作者</span>
-              </div>
+            <div className="border border-purple-200/20 rounded-lg p-4">
+              <h5 className="font-medium mb-2 text-purple-600">媒介的跨界融合</h5>
+              <p className="text-sm text-muted-foreground">
+                当代摄影越来越多地与其他媒介和艺术形式融合，如摄影装置、视频艺术、混合媒介等，
+                打破了传统的媒介界限，拓展了影像创作的可能性。
+              </p>
+            </div>
+            <div className="border border-purple-200/20 rounded-lg p-4">
+              <h5 className="font-medium mb-2 text-purple-600">多元文化视角</h5>
+              <p className="text-sm text-muted-foreground">
+                非西方摄影师和摄影传统获得更多关注，摄影实践和理论变得更加多元化和全球化，
+                挑战了西方中心的摄影史叙事，丰富了摄影的文化维度。
+              </p>
+            </div>
+            <div className="border border-purple-200/20 rounded-lg p-4">
+              <h5 className="font-medium mb-2 text-purple-600">社交媒体与大众影像</h5>
+              <p className="text-sm text-muted-foreground">
+                智能手机和社交媒体平台的普及使人人都成为影像创作者，民主化了摄影实践，
+                但也引发了关于影像过剩、视觉疲劳和图像消费主义的讨论。
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="mb-12">
-        <h3 className="text-2xl font-bold mb-6">摄影史研究的意义</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="border border-purple-200/20 rounded-lg p-6">
-            <h4 className="text-xl font-medium mb-4">对创作者的价值</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">提供历史参照系，帮助定位自己的创作在更广阔的摄影传统中的位置</p>
+        <h3 className="text-2xl font-bold mb-6">摄影史学习资源</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-accent/10 rounded-lg p-6">
+            <h4 className="text-lg font-medium mb-3">经典书籍</h4>
+            <ul className="space-y-2">
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">《摄影简史》</span>
+                <span>博蒙特·纽霍尔著，系统梳理摄影发展历程的经典之作</span>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">启发创作灵感，通过了解经典作品和传统技法拓展表现可能性</p>
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">《论摄影》</span>
+                <span>苏珊·桑塔格著，探讨摄影的社会和文化意义</span>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">深化对摄影本质的理解，避免重复历史已探索过的路径</p>
-              </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">培养批判性思维，能够分析和评价摄影作品和思潮</p>
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">《明室》</span>
+                <span>罗兰·巴特著，对摄影本质和观看体验的哲学思考</span>
               </li>
             </ul>
           </div>
-          <div className="border border-purple-200/20 rounded-lg p-6">
-            <h4 className="text-xl font-medium mb-4">对观看者的价值</h4>
-            <ul className="space-y-3">
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">提高鉴赏能力，能够更深入地理解和欣赏摄影作品</p>
+          <div className="bg-accent/10 rounded-lg p-6">
+            <h4 className="text-lg font-medium mb-3">在线资源</h4>
+            <ul className="space-y-2">
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">纽约现代艺术博物馆摄影部</span>
+                <span>提供丰富的摄影史资料和在线展览</span>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">发展媒介素养，以更批判的眼光看待日常接触的影像</p>
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">国际摄影中心</span>
+                <span>收藏和研究现代摄影的重要机构</span>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">了解影像如何塑造历史叙事和集体记忆</p>
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">美国摄影学会</span>
+                <span>提供摄影史教育和研究资源</span>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-2"></span>
-                <p className="text-sm">认识影像在不同文化和社会背景下的多元意义</p>
+            </ul>
+          </div>
+          <div className="bg-accent/10 rounded-lg p-6">
+            <h4 className="text-lg font-medium mb-3">摄影博物馆</h4>
+            <ul className="space-y-2">
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">纽约国际摄影中心</span>
+                <span>全球领先的摄影博物馆和教育机构</span>
+              </li>
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">巴黎欧洲摄影之家</span>
+                <span>欧洲重要的摄影艺术中心</span>
+              </li>
+              <li className="text-sm text-muted-foreground">
+                <span className="font-medium block">东京都摄影美术馆</span>
+                <span>亚洲重要的摄影艺术机构</span>
               </li>
             </ul>
           </div>

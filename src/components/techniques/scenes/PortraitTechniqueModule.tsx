@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { User, Camera, Users, Sun, Lightbulb } from "lucide-react";
-import { TechniqueTabs, StepByStepGuide, BeforeAfterComparison, TechniqueCard } from "../core";
+import { TechniqueTabs, StepByStepGuide, BeforeAfterComparison, TechniqueCard } from "@/components/techniques/core";
 
 export function PortraitTechniqueModule() {
   const [activeTab, setActiveTab] = useState("posing");
@@ -337,10 +337,8 @@ export function PortraitTechniqueModule() {
                       description={card.description}
                       difficulty={card.difficulty}
                       timeRequired={card.timeRequired}
-                      steps={card.steps}
                       tips={card.tips}
                       warnings={card.warnings}
-                      tags={["表情", "肖像"]}
                     />
                   ))}
                 </div>
@@ -356,7 +354,7 @@ export function PortraitTechniqueModule() {
           },
         ]}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        onChange={setActiveTab}
         variant="secondary"
       />
     </div>

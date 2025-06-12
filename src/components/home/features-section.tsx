@@ -1,118 +1,151 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CameraIcon, SparklesIcon, PaintBrushIcon, CpuChipIcon, WrenchScrewdriverIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+import { Camera, Lightbulb, Image, BookOpen, Palette, Settings } from "lucide-react";
 import Link from "next/link";
 
-const features = [
-  {
-    title: "基础知识",
-    description: "从零开始，建立摄影认知地基，掌握相机结构、曝光原理、焦距特性等基本概念。",
-    icon: CameraIcon,
-    href: "/basics",
-    color: "from-purple-600 to-purple-400",
-  },
-  {
-    title: "技术进阶",
-    description: "深入探索摄影原理，理解参数背后的科学逻辑，掌握曝光、测光与对焦系统等技术。",
-    icon: CpuChipIcon,
-    href: "/techniques",
-    color: "from-purple-600 to-purple-400",
-  },
-  {
-    title: "拍摄技巧",
-    description: "解决实战问题的操作指南，覆盖人像、风景、街拍等各类题材的专业拍摄方法。",
-    icon: SparklesIcon,
-    href: "/shooting-tips",
-    color: "from-purple-600 to-purple-400",
-  },
-  {
-    title: "场景与风格",
-    description: "探索不同场景的视觉语言，学习如何建立个人风格，解码经典摄影师的创作密码。",
-    icon: PaintBrushIcon,
-    href: "/styles",
-    color: "from-purple-600 to-purple-400",
-  },
-  {
-    title: "器材指南",
-    description: "基于实际场景的器材选购与使用建议，避开参数陷阱，找到真正适合的工具。",
-    icon: WrenchScrewdriverIcon,
-    href: "/equipment",
-    color: "from-purple-600 to-purple-400",
-  },
-  {
-    title: "艺术理论",
-    description: "超越技术层面的思考，探讨摄影的艺术本质，建立个人创作理念和视觉哲学。",
-    icon: BookOpenIcon,
-    href: "/arttheory",
-    color: "from-purple-600 to-purple-400",
-  },
-];
-
 export function FeaturesSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+  const features = [
+    {
+      title: "基础知识",
+      description: "从基本概念到相机操作，掌握摄影的核心知识和理论基础。",
+      icon: <BookOpen className="w-5 h-5" />,
+      href: "/basics",
+      color: "bg-neutral-200 dark:bg-neutral-700"
     },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
+    {
+      title: "拍摄技巧",
+      description: "针对不同场景和主题的实用拍摄方法和专业技巧指导。",
+      icon: <Camera className="w-5 h-5" />,
+      href: "/techniques",
+      color: "bg-neutral-200 dark:bg-neutral-700"
     },
-  };
+    {
+      title: "场景与风格",
+      description: "探索不同摄影风格的视觉语言和美学特征，发现和培养个人风格。",
+      icon: <Palette className="w-5 h-5" />,
+      href: "/styles",
+      color: "bg-purple-100 dark:bg-purple-900/60",
+      highlight: true
+    },
+    {
+      title: "后期处理",
+      description: "从基础调整到高级修饰，全面提升照片的视觉表现力。",
+      icon: <Image className="w-5 h-5" />,
+      href: "/postprocessing",
+      color: "bg-neutral-200 dark:bg-neutral-700"
+    },
+    {
+      title: "器材指南",
+      description: "相机、镜头和配件的选择建议与使用技巧解析。",
+      icon: <Settings className="w-5 h-5" />,
+      href: "/equipment",
+      color: "bg-neutral-200 dark:bg-neutral-700"
+    },
+    {
+      title: "创意灵感",
+      description: "突破思维局限，激发创作灵感，拓展摄影表现力。",
+      icon: <Lightbulb className="w-5 h-5" />,
+      href: "/showcase",
+      color: "bg-neutral-200 dark:bg-neutral-700"
+    },
+  ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-background to-background/80">
+    <section className="py-20 bg-neutral-50 dark:bg-neutral-900">
       <div className="container mx-auto px-4">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-3xl font-bold md:text-4xl mb-4">
-            探索摄影世界的六大模块
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            我们将摄影知识体系分为六大核心板块，每个模块针对特定领域，形成完整的学习路径。
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-neutral-800 dark:text-white">探索摄影的多维学习空间</h2>
+          <p className="text-lg text-neutral-600 dark:text-neutral-300">
+            从入门基础到专业技巧，我们提供系统化的学习路径和互动式的学习体验
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {features.map((feature) => (
-            <motion.div key={feature.title} variants={itemVariants}>
-              <Link
-                href={feature.href}
-                className="block h-full group"
-              >
-                <div className="bg-card border rounded-lg p-6 h-full transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
-                  <div className={`inline-flex p-3 rounded-full bg-gradient-to-br ${feature.color} mb-5`}>
-                    <feature.icon className="h-6 w-6 text-white" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className={`p-6 rounded-xl ${feature.highlight ? 'interactive-card border-2 border-purple-300 dark:border-purple-700 shadow-md' : 'bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600'}`}
+            >
+              <Link href={feature.href}>
+                <div className="h-full flex flex-col">
+                  <div className={`w-12 h-12 rounded-lg ${feature.color} flex items-center justify-center mb-4 ${feature.highlight ? 'text-purple-700 dark:text-purple-300' : 'text-neutral-700 dark:text-neutral-300'}`}>
+                    {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <h3 className="text-xl font-bold mb-3 text-neutral-800 dark:text-white">{feature.title}</h3>
+                  <p className="text-neutral-600 dark:text-neutral-400 mb-4">{feature.description}</p>
+                  {feature.highlight && (
+                    <div className="mt-auto pt-4 flex items-center text-purple-600 dark:text-purple-400 font-medium">
+                      <span>立即探索</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  )}
                 </div>
               </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* 场景与风格特别推荐 */}
+        <div className="mt-16 p-8 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20 border border-purple-200 dark:border-purple-800">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-1">
+              <h3 className="text-2xl font-bold mb-4 text-purple-800 dark:text-purple-300">发现摄影风格</h3>
+              <p className="text-purple-700 dark:text-purple-400 mb-6">
+                探索不同摄影风格的视觉语言和特点，找到适合自己的表达方式，提升作品的艺术性和个人风格。
+              </p>
+              <Link 
+                href="/styles" 
+                className="inline-flex items-center px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors"
+              >
+                <Palette className="w-4 h-4 mr-2" />
+                进入场景与风格
+              </Link>
+            </div>
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-lg overflow-hidden bg-white dark:bg-neutral-800 shadow-sm">
+                <div className="h-40 bg-purple-200 dark:bg-purple-900/40 relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd" 
+                    alt="电影感摄影风格" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                    <span className="text-white font-medium">电影感风格</span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    通过色彩、构图和光线，营造出仿佛电影画面的视觉效果和故事感。
+                  </p>
+                </div>
+              </div>
+              <div className="rounded-lg overflow-hidden bg-white dark:bg-neutral-800 shadow-sm">
+                <div className="h-40 bg-purple-200 dark:bg-purple-900/40 relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1617608338809-03a2d30e3203" 
+                    alt="极简主义风格" 
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                    <span className="text-white font-medium">极简主义</span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    注重简洁留白和形式纯粹性，通过减法创造强大的视觉冲击力。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

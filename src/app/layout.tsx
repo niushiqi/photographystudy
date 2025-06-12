@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { ConditionalFooter } from "@/components/layout/conditional-footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,16 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Header />
-          {children}
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-grow flex flex-col">
+              <div className="page-transition-enter-active flex-grow">
+                {children}
+              </div>
+            </main>
+            <ConditionalFooter />
+          </div>
         </ThemeProvider>
       </body>
     </html>

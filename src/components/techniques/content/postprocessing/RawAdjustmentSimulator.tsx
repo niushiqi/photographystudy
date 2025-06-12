@@ -5,290 +5,492 @@ import Image from "next/image";
 import { Slider } from "@/components/ui/slider";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import { motion } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface RawAdjustmentSimulatorProps {
   initialImage?: string;
   className?: string;
 }
 
+// 预设样式
+const presets = [
+  { name: "自然", exposure: 0, contrast: 10, highlights: -10, shadows: 15, whites: 5, blacks: -5, temperature: 0, tint: 0, clarity: 10, vibrance: 15, saturation: 5 },
+  { name: "高对比度", exposure: 0, contrast: 30, highlights: -20, shadows: -10, whites: 15, blacks: -15, temperature: 0, tint: 0, clarity: 20, vibrance: 10, saturation: 5 },
+  { name: "淡雅", exposure: 0.3, contrast: -10, highlights: -5, shadows: 20, whites: 0, blacks: 0, temperature: 5, tint: 5, clarity: 0, vibrance: 5, saturation: -10 },
+  { name: "黑白", exposure: 0, contrast: 20, highlights: -10, shadows: 10, whites: 10, blacks: -10, temperature: 0, tint: 0, clarity: 15, vibrance: 0, saturation: -100 },
+  { name: "暖色调", exposure: 0.2, contrast: 5, highlights: -5, shadows: 10, whites: 5, blacks: -5, temperature: 15, tint: 5, clarity: 5, vibrance: 15, saturation: 10 },
+];
+
 export function RawAdjustmentSimulator({
   initialImage = "/images/postprocessing/raw-samples/raw-sample",
   className,
 }: RawAdjustmentSimulatorProps) {
-  // 定义调整参数
-  const [exposure, setExposure] = useState([0]);
-  const [contrast, setContrast] = useState([0]);
-  const [highlights, setHighlights] = useState([0]);
-  const [shadows, setShadows] = useState([0]);
-  const [whites, setWhites] = useState([0]);
-  const [blacks, setBlacks] = useState([0]);
-  const [clarity, setClarity] = useState([0]);
-  const [vibrance, setVibrance] = useState([0]);
-  const [saturation, setSaturation] = useState([0]);
+  // 基本参数状态
+  const [exposure, setExposure] = useState(0);
+  const [contrast, setContrast] = useState(0);
+  const [highlights, setHighlights] = useState(0);
+  const [shadows, setShadows] = useState(0);
+  const [whites, setWhites] = useState(0);
+  const [blacks, setBlacks] = useState(0);
   
-  // 色温和色调
-  const [temperature, setTemperature] = useState([5500]);
-  const [tint, setTint] = useState([0]);
+  // 色彩参数状态
+  const [temperature, setTemperature] = useState(0);
+  const [tint, setTint] = useState(0);
+  const [clarity, setClarity] = useState(0);
+  const [vibrance, setVibrance] = useState(0);
+  const [saturation, setSaturation] = useState(0);
   
-  // 白平衡预设
-  const [whiteBalancePreset, setWhiteBalancePreset] = useState("自动");
+  // 当前选项卡和显示直方图状态
+  const [selectedTab, setSelectedTab] = useState("exposure");
+  const [showHistogram, setShowHistogram] = useState(false);
   
-  // 模拟处理后的图像路径
-  const [processedImageUrl, setProcessedImageUrl] = useState(initialImage);
-  
-  // 白平衡预设选项
-  const whiteBalancePresets = [
-    { name: "自动", temp: 5500, tint: 0 },
-    { name: "日光", temp: 5500, tint: 0 },
-    { name: "阴天", temp: 6500, tint: 10 },
-    { name: "阴影", temp: 7500, tint: 10 },
-    { name: "钨丝灯", temp: 2850, tint: 0 },
-    { name: "荧光灯", temp: 4000, tint: 15 },
-    { name: "闪光灯", temp: 5500, tint: 0 },
-  ];
-  
-  // 应用白平衡预设
-  const applyWhiteBalancePreset = (preset: string) => {
-    const selectedPreset = whiteBalancePresets.find(p => p.name === preset);
-    if (selectedPreset) {
-      setTemperature([selectedPreset.temp]);
-      setTint([selectedPreset.tint]);
-      setWhiteBalancePreset(preset);
-    }
+  // 重置所有调整
+  const resetAdjustments = () => {
+    setExposure(0);
+    setContrast(0);
+    setHighlights(0);
+    setShadows(0);
+    setWhites(0);
+    setBlacks(0);
+    setTemperature(0);
+    setTint(0);
+    setClarity(0);
+    setVibrance(0);
+    setSaturation(0);
   };
   
-  // 当参数变化时，更新"处理后"的图像（模拟）
-  // 在实际应用中，这里会应用真正的图像处理算法
-  useEffect(() => {
-    // 这里仅作演示，实际应用中应该应用真正的处理算法
-    // 修改为使用固定图片而不是尝试构建动态路径
-    setProcessedImageUrl("/images/postprocessing/raw-samples/raw-sample-processed.jpg");
-  }, [
-    exposure[0],
-    contrast[0],
-    highlights[0],
-    shadows[0],
-    whites[0],
-    blacks[0],
-    clarity[0],
-    vibrance[0],
-    saturation[0],
-    temperature[0],
-    tint[0],
-  ]);
+  // 应用预设
+  const applyPreset = (preset) => {
+    setExposure(preset.exposure);
+    setContrast(preset.contrast);
+    setHighlights(preset.highlights);
+    setShadows(preset.shadows);
+    setWhites(preset.whites);
+    setBlacks(preset.blacks);
+    setTemperature(preset.temperature);
+    setTint(preset.tint);
+    setClarity(preset.clarity);
+    setVibrance(preset.vibrance);
+    setSaturation(preset.saturation);
+  };
+  
+  // 图像滤镜样式 
+  const filterStyle = {
+    filter: `
+      brightness(${1 + exposure/100})
+      contrast(${1 + contrast/100})
+      saturate(${1 + saturation/100})
+      sepia(${temperature > 0 ? temperature/200 : 0})
+    `,
+    transform: `scale(${1 + clarity/500})`,
+  };
+  
+  // 模拟的高光和阴影调整
+  const overlayStyles = {
+    highlights: {
+      background: `rgba(255,255,255,${Math.abs(highlights)/200})`,
+      mixBlendMode: highlights >= 0 ? 'lighten' : 'darken',
+    },
+    shadows: {
+      background: `rgba(0,0,0,${Math.abs(shadows)/200})`,
+      mixBlendMode: shadows >= 0 ? 'lighten' : 'darken',
+    },
+    whites: {
+      background: `rgba(255,255,255,${Math.abs(whites)/200})`,
+      mixBlendMode: whites >= 0 ? 'lighten' : 'darken',
+    },
+    blacks: {
+      background: `rgba(0,0,0,${Math.abs(blacks)/200})`,
+      mixBlendMode: blacks >= 0 ? 'lighten' : 'darken',
+    },
+    temperature: {
+      background: temperature > 0 
+        ? `rgba(255,200,100,${Math.abs(temperature)/200})`
+        : `rgba(100,150,255,${Math.abs(temperature)/200})`,
+      mixBlendMode: 'overlay',
+    },
+    tint: {
+      background: tint > 0 
+        ? `rgba(255,150,255,${Math.abs(tint)/200})`
+        : `rgba(150,255,150,${Math.abs(tint)/200})`,
+      mixBlendMode: 'overlay',
+    },
+    vibrance: {
+      background: `rgba(0,0,0,0)`, // 在实际应用中，vibrance是复杂的算法，这里简化处理
+    },
+  };
 
-  // 滑块属性配置
-  const sliderConfig = {
-    exposure: { min: -5, max: 5, step: 0.1, unit: "EV", format: (v: number) => v.toFixed(1) },
-    contrast: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    highlights: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    shadows: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    whites: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    blacks: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    clarity: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    vibrance: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    saturation: { min: -100, max: 100, step: 1, unit: "", format: (v: number) => v.toString() },
-    temperature: { min: 2000, max: 9000, step: 50, unit: "K", format: (v: number) => v.toString() },
-    tint: { min: -150, max: 150, step: 1, unit: "", format: (v: number) => v.toString() },
-  };
-  
   return (
-    <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 ${className}`}>
-      {/* 左侧：调整参数面板 */}
-      <div className="space-y-6">
-        <div className="space-y-6">
-          <h3 className="text-lg font-semibold mb-4">基本调整</h3>
-          
-          {/* 曝光度滑块 */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>曝光度</span>
-              <span>{sliderConfig.exposure.format(exposure[0])} {sliderConfig.exposure.unit}</span>
-            </div>
-            <Slider
-              value={exposure}
-              min={sliderConfig.exposure.min}
-              max={sliderConfig.exposure.max}
-              step={sliderConfig.exposure.step}
-              onValueChange={setExposure}
-              className="w-full"
-            />
-          </div>
-          
-          {/* 对比度滑块 */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>对比度</span>
-              <span>{sliderConfig.contrast.format(contrast[0])}</span>
-            </div>
-            <Slider
-              value={contrast}
-              min={sliderConfig.contrast.min}
-              max={sliderConfig.contrast.max}
-              step={sliderConfig.contrast.step}
-              onValueChange={setContrast}
-              className="w-full"
-            />
-          </div>
-          
-          {/* 高光滑块 */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>高光</span>
-              <span>{sliderConfig.highlights.format(highlights[0])}</span>
-            </div>
-            <Slider
-              value={highlights}
-              min={sliderConfig.highlights.min}
-              max={sliderConfig.highlights.max}
-              step={sliderConfig.highlights.step}
-              onValueChange={setHighlights}
-              className="w-full"
-            />
-          </div>
-          
-          {/* 阴影滑块 */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>阴影</span>
-              <span>{sliderConfig.shadows.format(shadows[0])}</span>
-            </div>
-            <Slider
-              value={shadows}
-              min={sliderConfig.shadows.min}
-              max={sliderConfig.shadows.max}
-              step={sliderConfig.shadows.step}
-              onValueChange={setShadows}
-              className="w-full"
-            />
-          </div>
-        </div>
-        
-        <div className="space-y-6">
-          <h3 className="text-lg font-semibold mb-4">白平衡</h3>
-          
-          {/* 白平衡预设按钮 */}
-          <div className="grid grid-cols-4 gap-2">
-            {whiteBalancePresets.map((preset) => (
-              <button
-                key={preset.name}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  whiteBalancePreset === preset.name
-                    ? "bg-purple-600 text-white"
-                    : "bg-purple-800/30 hover:bg-purple-700/40"
-                }`}
-                onClick={() => applyWhiteBalancePreset(preset.name)}
-              >
-                {preset.name}
-              </button>
-            ))}
-          </div>
-          
-          {/* 色温滑块 */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>色温</span>
-              <span>{sliderConfig.temperature.format(temperature[0])} {sliderConfig.temperature.unit}</span>
-            </div>
-            <div className="h-4 w-full rounded-full mb-1 bg-gradient-to-r from-blue-500 via-white to-yellow-500"></div>
-            <Slider
-              value={temperature}
-              min={sliderConfig.temperature.min}
-              max={sliderConfig.temperature.max}
-              step={sliderConfig.temperature.step}
-              onValueChange={(value) => {
-                setTemperature(value);
-                setWhiteBalancePreset("自定义");
-              }}
-              className="w-full"
-            />
-          </div>
-          
-          {/* 色调滑块 */}
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span>色调</span>
-              <span>{sliderConfig.tint.format(tint[0])}</span>
-            </div>
-            <div className="h-4 w-full rounded-full mb-1 bg-gradient-to-r from-green-500 to-magenta-500"></div>
-            <Slider
-              value={tint}
-              min={sliderConfig.tint.min}
-              max={sliderConfig.tint.max}
-              step={sliderConfig.tint.step}
-              onValueChange={(value) => {
-                setTint(value);
-                setWhiteBalancePreset("自定义");
-              }}
-              className="w-full"
-            />
-          </div>
-        </div>
-      </div>
+    <div className="p-6 border border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-slate-900 shadow-lg">
+      <h2 className="text-xl font-bold mb-6 text-purple-800 dark:text-purple-300">RAW调整模拟器</h2>
       
-      {/* 右侧：预览效果 */}
-      <div className="space-y-6">
-        <BeforeAfterSlider
-          beforeImage={initialImage}
-          afterImage={processedImageUrl}
-          beforeLabel="原始RAW"
-          afterLabel="处理后"
-          className="w-full h-auto"
-        />
-        
-        <div className="bg-purple-900/30 border border-purple-700/30 rounded-xl p-4">
-          <h4 className="font-semibold mb-2 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
-            RAW文件优势
-          </h4>
-          <p className="text-sm text-muted-foreground">
-            注意RAW文件如何保留了高光和阴影中的细节，使您能够恢复过曝或欠曝的区域。这是JPEG格式无法做到的。
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-purple-900/20 border border-purple-700/20 rounded-lg p-3">
-            <div className="flex items-center justify-between">
-              <h5 className="font-medium text-sm">直方图</h5>
-              <div className="flex space-x-1">
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-              </div>
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* 左侧：调整参数面板 */}
+        <div className="w-full md:w-3/5">
+          <div className="relative aspect-video rounded-lg overflow-hidden border border-purple-200 dark:border-purple-800">
+            {/* 基础图像 */}
+            <div className="absolute inset-0" style={filterStyle}>
+              <Image
+                src="/images/postprocessing/raw-samples/landscape-raw.jpg"
+                alt="Raw图像"
+                fill
+                className="object-cover"
+              />
+              
+              {/* 各种调整叠加层 */}
+              <div className="absolute inset-0" style={overlayStyles.highlights}></div>
+              <div className="absolute inset-0" style={overlayStyles.shadows}></div>
+              <div className="absolute inset-0" style={overlayStyles.whites}></div>
+              <div className="absolute inset-0" style={overlayStyles.blacks}></div>
+              <div className="absolute inset-0" style={overlayStyles.temperature}></div>
+              <div className="absolute inset-0" style={overlayStyles.tint}></div>
+              <div className="absolute inset-0" style={overlayStyles.vibrance}></div>
             </div>
-            <div className="h-16 mt-2 bg-black/30 rounded flex items-end justify-between px-1">
-              {/* 模拟直方图 */}
-              {Array.from({ length: 15 }).map((_, i) => (
-                <div 
-                  key={i} 
-                  className="w-1 bg-white/70" 
-                  style={{ 
-                    height: `${20 + Math.random() * 60}%`,
-                  }}
-                ></div>
+            
+            {/* 直方图叠加层 */}
+            {showHistogram && (
+              <div className="absolute top-3 right-3 w-32 h-24 bg-black/70 rounded p-2">
+                <Image 
+                  src="/images/postprocessing/histogram.png" 
+                  alt="直方图" 
+                  width={120} 
+                  height={80}
+                  className="object-contain"
+                />
+              </div>
+            )}
+          </div>
+          
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setShowHistogram(!showHistogram)}
+              className={cn(
+                "text-xs border-purple-300 dark:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/30",
+                showHistogram && "bg-purple-100 dark:bg-purple-900/30"
+              )}
+            >
+              {showHistogram ? "隐藏直方图" : "显示直方图"}
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={resetAdjustments}
+              className="text-xs border-purple-300 dark:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/30"
+            >
+              重置调整
+            </Button>
+          </div>
+          
+          {/* 预设选择器 */}
+          <div className="mt-6">
+            <h3 className="text-sm font-medium mb-2 text-purple-800 dark:text-purple-300">预设样式</h3>
+            <div className="flex flex-wrap gap-2">
+              {presets.map((preset) => (
+                <Button 
+                  key={preset.name}
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => applyPreset(preset)}
+                  className="text-xs border-purple-300 dark:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                >
+                  {preset.name}
+                </Button>
               ))}
             </div>
           </div>
-          
-          <div className="bg-purple-900/20 border border-purple-700/20 rounded-lg p-3">
-            <h5 className="font-medium text-sm mb-2">RGB数值</h5>
-            <div className="space-y-1 text-xs">
-              <div className="flex justify-between">
-                <span className="text-red-400">R:</span>
-                <span>255</span>
+        </div>
+        
+        {/* 右侧：预览效果 */}
+        <div className="w-full md:w-2/5">
+          <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+            <TabsList className="mb-4 w-full grid grid-cols-3 gap-2 bg-transparent">
+              <TabsTrigger 
+                value="exposure" 
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-md px-4 py-2 rounded-lg border border-purple-400 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all"
+              >
+                曝光与对比度
+              </TabsTrigger>
+              <TabsTrigger 
+                value="color" 
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-md px-4 py-2 rounded-lg border border-purple-400 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all"
+              >
+                色彩调整
+              </TabsTrigger>
+              <TabsTrigger 
+                value="detail" 
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:shadow-md px-4 py-2 rounded-lg border border-purple-400 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-all"
+              >
+                清晰度与细节
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="exposure">
+              <div className="space-y-6">
+                {/* 曝光调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">曝光</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{exposure > 0 ? `+${exposure}` : exposure}</span>
+                  </div>
+                  <Slider
+                    value={[exposure]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setExposure(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 对比度调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">对比度</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{contrast > 0 ? `+${contrast}` : contrast}</span>
+                  </div>
+                  <Slider
+                    value={[contrast]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setContrast(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 高光调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">高光</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{highlights > 0 ? `+${highlights}` : highlights}</span>
+                  </div>
+                  <Slider
+                    value={[highlights]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setHighlights(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 阴影调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">阴影</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{shadows > 0 ? `+${shadows}` : shadows}</span>
+                  </div>
+                  <Slider
+                    value={[shadows]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setShadows(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 白色点调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">白色点</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{whites > 0 ? `+${whites}` : whites}</span>
+                  </div>
+                  <Slider
+                    value={[whites]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setWhites(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 黑色点调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">黑色点</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{blacks > 0 ? `+${blacks}` : blacks}</span>
+                  </div>
+                  <Slider
+                    value={[blacks]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setBlacks(value[0])}
+                    className="py-2"
+                  />
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-green-400">G:</span>
-                <span>240</span>
+              
+              <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-xs text-gray-600 dark:text-gray-400">
+                <p className="font-medium text-purple-700 dark:text-purple-400 mb-2">提示：</p>
+                <p>调整曝光来设置整体亮度，使用高光和阴影恢复细节，最后微调白色点和黑色点以增强对比度。</p>
               </div>
-              <div className="flex justify-between">
-                <span className="text-blue-400">B:</span>
-                <span>220</span>
+            </TabsContent>
+            
+            <TabsContent value="color">
+              <div className="space-y-6">
+                {/* 色温调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">色温</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{temperature > 0 ? `+${temperature}` : temperature}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-blue-500">冷</span>
+                    <Slider
+                      value={[temperature]}
+                      min={-100}
+                      max={100}
+                      step={1}
+                      onValueChange={(value) => setTemperature(value[0])}
+                      className="py-2"
+                    />
+                    <span className="text-xs text-amber-500">暖</span>
+                  </div>
+                </div>
+                
+                {/* 色调调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">色调</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{tint > 0 ? `+${tint}` : tint}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-green-500">绿</span>
+                    <Slider
+                      value={[tint]}
+                      min={-100}
+                      max={100}
+                      step={1}
+                      onValueChange={(value) => setTint(value[0])}
+                      className="py-2"
+                    />
+                    <span className="text-xs text-pink-500">品红</span>
+                  </div>
+                </div>
+                
+                {/* 自然饱和度调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">自然饱和度</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{vibrance > 0 ? `+${vibrance}` : vibrance}</span>
+                  </div>
+                  <Slider
+                    value={[vibrance]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setVibrance(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 饱和度调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">饱和度</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{saturation > 0 ? `+${saturation}` : saturation}</span>
+                  </div>
+                  <Slider
+                    value={[saturation]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setSaturation(value[0])}
+                    className="py-2"
+                  />
+                </div>
               </div>
-            </div>
-          </div>
+              
+              <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-xs text-gray-600 dark:text-gray-400">
+                <p className="font-medium text-purple-700 dark:text-purple-400 mb-2">自然饱和度 vs 饱和度:</p>
+                <p>自然饱和度主要增强不饱和的颜色，而饱和度则均匀地增强所有颜色。优先使用自然饱和度以获得更自然的效果。</p>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="detail">
+              <div className="space-y-6">
+                {/* 清晰度调整 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">清晰度</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{clarity > 0 ? `+${clarity}` : clarity}</span>
+                  </div>
+                  <Slider
+                    value={[clarity]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setClarity(value[0])}
+                    className="py-2"
+                  />
+                </div>
+                
+                {/* 纹理调整 - 实际模拟器中可以继续添加 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">纹理</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">0</span>
+                  </div>
+                  <Slider
+                    value={[0]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    disabled
+                    className="py-2 opacity-50"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">在此模拟器中不可用</p>
+                </div>
+                
+                {/* 锐度调整 - 实际模拟器中可以继续添加 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">锐度</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">0</span>
+                  </div>
+                  <Slider
+                    value={[0]}
+                    min={-100}
+                    max={100}
+                    step={1}
+                    disabled
+                    className="py-2 opacity-50"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">在此模拟器中不可用</p>
+                </div>
+                
+                {/* 降噪调整 - 实际模拟器中可以继续添加 */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">降噪</label>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">0</span>
+                  </div>
+                  <Slider
+                    value={[0]}
+                    min={0}
+                    max={100}
+                    step={1}
+                    disabled
+                    className="py-2 opacity-50"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic">在此模拟器中不可用</p>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-xs text-gray-600 dark:text-gray-400">
+                <p className="font-medium text-purple-700 dark:text-purple-400 mb-2">提示：</p>
+                <p>清晰度通过增加中等对比度来增强图像结构，但过量使用会导致图像失真。这些调整通常是后期处理工作流程的最后步骤。</p>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

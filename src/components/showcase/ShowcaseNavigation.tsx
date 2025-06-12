@@ -28,7 +28,7 @@ export function ShowcaseNavigation({
             key={module.id}
             onClick={() => setActiveModule(module.id)}
             className={cn(
-              "px-4 py-3 rounded-lg transition-all duration-300 min-w-[180px] md:min-w-[200px] border flex flex-col items-start",
+              "px-4 py-3 rounded-lg transition-all duration-300 min-w-[180px] md:min-w-[200px] border flex flex-col items-start relative",
               activeModule === module.id
                 ? "border-primary bg-primary/10 text-primary"
                 : "border-border hover:border-primary/50 hover:bg-primary/5"
@@ -38,14 +38,6 @@ export function ShowcaseNavigation({
             <span className="text-xs text-muted-foreground line-clamp-2">
               {module.description}
             </span>
-            {activeModule === module.id && (
-              <motion.div
-                layoutId="activeModuleIndicator"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                initial={false}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
           </button>
         ))}
       </div>

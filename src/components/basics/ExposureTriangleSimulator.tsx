@@ -11,6 +11,7 @@ type ExposureTriangleSimulatorProps = {
   baseImage: string;
   initialSettings?: ExposureSettings;
   showEffectsSeparately?: boolean;
+  onComplete?: () => void;
 };
 
 // 快门速度选项（秒）
@@ -45,7 +46,8 @@ const shutterSpeedToSeconds = (speed: string): number => {
 export default function ExposureTriangleSimulator({
   baseImage = '/images/basics/exposure-sample.jpg',
   initialSettings = { aperture: 4, shutterSpeed: 1/125, iso: 400 },
-  showEffectsSeparately = true
+  showEffectsSeparately = true,
+  onComplete
 }: ExposureTriangleSimulatorProps) {
   const [settings, setSettings] = useState<ExposureSettings>(initialSettings);
   const [exposureValue, setExposureValue] = useState<number>(0);

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 type CameraSystem = "sony" | "canon" | "nikon" | "fujifilm" | "panasonic" | "olympus";
 type PhotographyLevel = "beginner" | "enthusiast" | "professional";
-type PhotographyStyle = "portrait" | "landscape" | "wildlife" | "street" | "studio" | "sports" | "travel" | "video";
+type PhotographyStyle = "portrait" | "landscape" | "wildlife" | "street" | "studio" | "sports" | "travel" | "video" | "event";
 type AccessoryType = 
   | "tripod" 
   | "flash" 
@@ -179,15 +179,80 @@ const accessoriesData: Accessory[] = [
   }
 ];
 
+// 预设套件数据
+const presetKits = [
+  {
+    id: "portrait-kit",
+    name: "人像摄影套件",
+    description: "适合专业人像摄影的完整配件套装",
+    level: "professional",
+    price: 6599,
+    image: "/images/accessories/portrait-kit.jpg",
+    items: [
+      "神牛 V1 圆头闪光灯",
+      "神牛 SL-60W LED灯",
+      "曼富图 MT055XPRO3三脚架",
+      "NiSi V6 滤镜系统套装",
+      "PeakDesign 旅行者背包"
+    ],
+    styles: ["portrait", "studio"]
+  },
+  {
+    id: "landscape-kit",
+    name: "风景摄影套件",
+    description: "专为风景摄影师设计的便携配件组合",
+    level: "enthusiast",
+    price: 4899,
+    image: "/images/accessories/landscape-kit.jpg",
+    items: [
+      "碳云 CT-5C 三脚架",
+      "NiSi V6 滤镜系统套装",
+      "PeakDesign 旅行者背包",
+      "SanDisk Extreme Pro SD卡"
+    ],
+    styles: ["landscape", "travel"]
+  },
+  {
+    id: "vlogger-kit",
+    name: "视频创作者套件",
+    description: "为Vlogger和视频内容创作者优化的配件组合",
+    level: "enthusiast",
+    price: 5599,
+    image: "/images/accessories/vlog-kit.jpg",
+    items: [
+      "RODE VideoMic Pro+",
+      "DJI RS 2云台",
+      "神牛 SL-60W LED灯",
+      "PeakDesign 旅行者背包"
+    ],
+    styles: ["video", "travel"]
+  },
+  {
+    id: "beginner-kit",
+    name: "摄影入门套件",
+    description: "为初学者提供的实用且经济的配件组合",
+    level: "beginner",
+    price: 2999,
+    image: "/images/accessories/beginner-kit.jpg",
+    items: [
+      "思锐 T-2205X 三脚架",
+      "Godox TT350 闪光灯",
+      "相机基础清洁套装",
+      "入门级相机包"
+    ],
+    styles: ["portrait", "landscape", "travel"]
+  }
+];
+
 export function AccessoryPlannerModule() {
   const [cameraSystem, setCameraSystem] = useState<CameraSystem>("sony");
   const [photographyLevel, setPhotographyLevel] = useState<PhotographyLevel>("enthusiast");
   const [photographyStyles, setPhotographyStyles] = useState<PhotographyStyle[]>([]);
   const [selectedTypes, setSelectedTypes] = useState<AccessoryType[]>([]);
   const [budgetLimit, setBudgetLimit] = useState<number>(5000);
-  
   const [activeTab, setActiveTab] = useState<"kits" | "essentials" | "custom">("kits");
-
+  const [selectedKit, setSelectedKit] = useState<(typeof presetKits)[0] | null>(null);
+  
   // 相机系统选项
   const cameraSystems: { id: CameraSystem; label: string; image?: string }[] = [
     { id: "sony", label: "索尼 (Sony)" },
@@ -229,31 +294,6 @@ export function AccessoryPlannerModule() {
     { id: "gimbal", label: "稳定器", icon: "🎥" },
     { id: "microphone", label: "麦克风", icon: "🎤" },
     { id: "battery", label: "电池/电源", icon: "🔋" },
-  ];
-
-  // 预定义套件
-  const predefinedKits = [
-    {
-      id: "portrait",
-      title: "人像摄影套件",
-      items: ["flash", "lighting", "filter"],
-      description: "适合室内外人像拍摄的基础配件组合",
-      image: "/images/kits/portrait-kit.jpg"
-    },
-    {
-      id: "landscape",
-      title: "风景摄影套件",
-      items: ["tripod", "filter", "remote"],
-      description: "专为风景拍摄优化的配件组合",
-      image: "/images/kits/landscape-kit.jpg"
-    },
-    {
-      id: "videography",
-      title: "视频拍摄套件",
-      items: ["gimbal", "microphone", "lighting"],
-      description: "提供流畅稳定视频和高品质音频的组合",
-      image: "/images/kits/video-kit.jpg"
-    }
   ];
 
   // 必备配件列表（根据摄影风格推荐）
@@ -324,49 +364,154 @@ export function AccessoryPlannerModule() {
     });
   };
 
-  // 渲染套件选择
+  // 渲染预设套件选择
   const renderKitSelection = () => {
+    const filteredKits = presetKits.filter(kit => {
+      // 筛选相应级别的套件
+      if (kit.level !== photographyLevel) return false;
+      
+      // 如果选择了拍摄风格，确保至少匹配一种
+      if (photographyStyles.length > 0) {
+        const hasMatchingStyle = photographyStyles.some(style => 
+          kit.styles.includes(style as any)
+        );
+        if (!hasMatchingStyle) return false;
+      }
+      
+      return true;
+    });
+
     return (
       <div className="space-y-6">
         <p className="text-muted-foreground mb-4">
-          选择适合您摄影需求的预设配件套装，这些套装根据不同摄影场景精心搭配了最常用的配件。
+          根据您的相机系统和拍摄风格，我们推荐以下预设配件套件。点击套件卡片查看详情。
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {predefinedKits.map((kit) => (
-            <div 
-              key={kit.id}
-              className="border rounded-xl overflow-hidden hover:shadow-md transition-shadow"
-            >
-              <div className="h-40 bg-slate-100 relative flex items-center justify-center">
-                {/* 实际项目中应替换为真实图片 */}
-                <div className="text-4xl">{kit.id === "portrait" ? "📸" : kit.id === "landscape" ? "🏞️" : "🎥"}</div>
+        {filteredKits.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {filteredKits.map(kit => (
+              <div
+                key={kit.id}
+                onClick={() => setSelectedKit(kit)}
+                className="border rounded-lg overflow-hidden hover:shadow-md transition-all cursor-pointer hover:border-primary"
+              >
+                <div className="h-40 bg-slate-100 dark:bg-slate-800 relative flex items-center justify-center">
+                  <div className="text-5xl">📷</div>
+                </div>
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="text-lg font-semibold">{kit.name}</h4>
+                    <span className="font-medium">¥{kit.price}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">{kit.description}</p>
+                  
+                  <div className="mt-2">
+                    <h5 className="text-sm font-medium mb-1">包含配件:</h5>
+                    <ul className="text-xs text-muted-foreground space-y-1 list-disc pl-4">
+                      {kit.items.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="mt-3 flex flex-wrap gap-1">
+                    {kit.styles.map((style) => (
+                      <span key={style} className="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">
+                        {photographyStyleOptions.find(opt => opt.id === style)?.label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="p-4">
-                <h4 className="text-lg font-semibold">{kit.title}</h4>
-                <p className="text-sm text-muted-foreground mt-1">{kit.description}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {kit.items.map((item) => (
-                    <span 
-                      key={item} 
-                      className="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full"
-                    >
-                      {accessoryTypesOptions.find(opt => opt.id === item)?.label}
-                    </span>
-                  ))}
+            ))}
+          </div>
+        ) : (
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-6 text-center">
+            <p className="text-yellow-800 dark:text-yellow-200">
+              没有找到符合您当前选择的预设套件。请尝试选择不同的摄影风格或更改摄影水平。
+            </p>
+            <button 
+              onClick={() => setActiveTab("custom")}
+              className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium"
+            >
+              转到自定义配件选择
+            </button>
+          </div>
+        )}
+
+        {/* 套件详情弹窗 */}
+        {selectedKit && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-slate-900 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-xl font-bold">{selectedKit.name}</h3>
+                  <button 
+                    onClick={() => setSelectedKit(null)}
+                    className="text-slate-500 hover:text-slate-700"
+                  >
+                    ✕
+                  </button>
+                </div>
+                
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <div className="h-60 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
+                      <div className="text-6xl">📷</div>
+                    </div>
+                    
+                    <div className="mt-4">
+                      <div className="flex justify-between mb-2">
+                        <span className="font-medium">套件价格:</span>
+                        <span className="font-bold">¥{selectedKit.price}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="font-medium">适合级别:</span>
+                        <span>{photographyLevels.find(l => l.id === selectedKit.level)?.label}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium mb-2">套件描述</h4>
+                    <p className="text-muted-foreground mb-4">{selectedKit.description}</p>
+                    
+                    <h4 className="font-medium mb-2">包含配件</h4>
+                    <ul className="space-y-2 mb-4">
+                      {selectedKit.items.map((item, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <span className="text-primary mr-2">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    
+                    <h4 className="font-medium mb-2">适合拍摄风格</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedKit.styles.map((style) => (
+                        <span key={style} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                          {photographyStyleOptions.find(opt => opt.id === style)?.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 flex justify-end gap-3">
+                  <button 
+                    onClick={() => setSelectedKit(null)}
+                    className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-md text-sm font-medium"
+                  >
+                    关闭
+                  </button>
+                  <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">
+                    查看购买链接
+                  </button>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mt-8">
-          <h4 className="font-medium text-blue-700 dark:text-blue-400 mb-2">选择套件的好处</h4>
-          <p className="text-sm text-blue-600 dark:text-blue-300">
-            预设套件经过专业摄影师精心搭配，确保配件之间的兼容性和互补性，
-            帮助您迅速构建完整的摄影系统，同时通常比单独购买更具性价比。
-          </p>
-        </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -642,11 +787,11 @@ export function AccessoryPlannerModule() {
           </div>
         </div>
 
-        {/* 内容区域 */}
+        {/* 标签内容区域 */}
         <motion.div
           key={activeTab}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
           {activeTab === "kits" && renderKitSelection()}

@@ -3,12 +3,20 @@ import React from 'react';
 type Module = {
   id: string;
   name: string;
-  icon?: React.ReactNode;
+  icon?: string; // Icon identifier string
   description?: string;
 };
 
+type ModuleNavigationProps = {
+  modules: Module[];
+  activeModule: string;
+  onModuleChange: (moduleId: string) => void;
+  progress?: Record<string, string>;
+  getIcon?: (iconName: string) => React.ReactNode; // Optional function to get icons
+};
+
 // Icons for each module
-const getModuleIcon = (moduleId: string) => {
+const getDefaultModuleIcon = (moduleId: string) => {
   switch(moduleId) {
     case 'camera':
       return (
@@ -26,7 +34,7 @@ const getModuleIcon = (moduleId: string) => {
     case 'lens':
       return (
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       );
     case 'focus':
@@ -80,45 +88,97 @@ const getModuleDescription = (moduleId: string) => {
   }
 };
 
-type ModuleNavigationProps = {
-  modules: Module[];
-  activeModule: string;
-  onModuleChange: (moduleId: string) => void;
+// 获取进度状态对应的样式
+const getProgressStyles = (moduleId: string, progress?: Record<string, string>) => {
+  if (!progress) return {};
+  
+  switch(progress[moduleId]) {
+    case 'completed':
+      return {
+        indicatorColor: 'bg-green-500',
+        borderColor: 'border-green-400',
+        hoverBg: 'hover:bg-green-50 dark:hover:bg-green-900/20',
+        textColor: 'text-green-700 dark:text-green-400'
+      };
+    case 'inProgress':
+      return {
+        indicatorColor: 'bg-blue-500',
+        borderColor: 'border-blue-400',
+        hoverBg: 'hover:bg-blue-50 dark:hover:bg-blue-900/20',
+        textColor: 'text-blue-700 dark:text-blue-400'
+      };
+    default:
+      return {
+        indicatorColor: 'bg-gray-300 dark:bg-gray-600',
+        borderColor: 'border-transparent',
+        hoverBg: 'hover:bg-gray-50 dark:hover:bg-gray-700',
+        textColor: 'text-gray-700 dark:text-gray-300'
+      };
+  }
 };
 
-export default function ModuleNavigation({ modules, activeModule, onModuleChange }: ModuleNavigationProps) {
+export default function ModuleNavigation({ 
+  modules, 
+  activeModule, 
+  onModuleChange, 
+  progress,
+  getIcon
+}: ModuleNavigationProps) {
+  // Render an icon using custom function if provided or fall back to default
+  const renderIcon = (module: Module) => {
+    if (getIcon && module.icon) {
+      return getIcon(module.icon);
+    }
+    return getDefaultModuleIcon(module.id);
+  };
+
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-8">
-      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">基础知识模块</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
-        {modules.map((module) => (
+    <div className="divide-y divide-gray-100 dark:divide-gray-700">
+      {modules.map((module) => {
+        const progressStyles = getProgressStyles(module.id, progress);
+        return (
           <button
             key={module.id}
             onClick={() => onModuleChange(module.id)}
-            className={`flex flex-col items-center p-3 rounded-lg transition-all ${
+            className={`relative flex items-center w-full px-4 py-3 transition-all text-left ${
               activeModule === module.id
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
+                ? 'bg-blue-50 dark:bg-blue-900/20'
+                : `${progressStyles.hoverBg}`
             }`}
           >
+            {/* 进度指示器 */}
+            {progress && (
+              <div className={`absolute top-1/2 right-4 transform -translate-y-1/2 w-2.5 h-2.5 rounded-full ${progressStyles.indicatorColor}`}></div>
+            )}
+            
             <div
-              className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
+              className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 ${
                 activeModule === module.id
-                  ? 'bg-blue-600'
-                  : 'bg-white dark:bg-gray-800'
+                  ? 'bg-blue-100 dark:bg-blue-800/60 text-blue-600 dark:text-blue-300'
+                  : `bg-gray-100 dark:bg-gray-700 ${progressStyles.textColor}`
               }`}
             >
-              {module.icon || getModuleIcon(module.id)}
+              {renderIcon(module)}
             </div>
-            <span className="text-sm font-medium text-center">{module.name}</span>
+            
+            <div>
+              <span className={`font-medium ${
+                activeModule === module.id
+                  ? 'text-blue-700 dark:text-blue-300'
+                  : progressStyles.textColor
+              }`}>
+                {module.name}
+              </span>
+              
+              {module.description && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {module.description}
+                </p>
+              )}
+            </div>
           </button>
-        ))}
-      </div>
-      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-        <p className="text-gray-600 dark:text-gray-300">
-          {modules.find(m => m.id === activeModule)?.description || getModuleDescription(activeModule)}
-        </p>
-      </div>
+        );
+      })}
     </div>
   );
-} 
+}

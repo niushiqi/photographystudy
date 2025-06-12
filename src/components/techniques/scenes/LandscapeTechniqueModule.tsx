@@ -360,7 +360,7 @@ export function LandscapeTechniqueModule() {
           },
         ]}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        onChange={setActiveTab}
         variant="secondary"
       />
     </div>

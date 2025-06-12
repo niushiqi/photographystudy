@@ -3,7 +3,11 @@
 import React, { useState } from 'react';
 import { Slider } from "@/components/ui/slider";
 
-const FocusDepthOfField = () => {
+interface FocusDepthOfFieldProps {
+  onComplete?: () => void;
+}
+
+const FocusDepthOfField: React.FC<FocusDepthOfFieldProps> = ({ onComplete }) => {
   const [aperture, setAperture] = useState(8);
   const [focusDistance, setFocusDistance] = useState(5);
   const [focalLength, setFocalLength] = useState(50);
@@ -203,14 +207,25 @@ const FocusDepthOfField = () => {
               <h4 className="font-medium">深景深应用场景:</h4>
               <ul className="list-disc pl-5 space-y-1 text-gray-700 dark:text-gray-300">
                 <li>风景摄影：从前景到远景全部清晰</li>
-                <li>建筑摄影：保留结构细节</li>
+                <li>建筑摄影：保持线条和细节清晰</li>
                 <li>纪实摄影：记录完整场景信息</li>
-                <li>星空摄影：保证星点清晰</li>
               </ul>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* 完成学习按钮 */}
+      {onComplete && (
+        <div className="mt-6 text-center">
+          <button 
+            onClick={onComplete}
+            className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          >
+            完成学习
+          </button>
+        </div>
+      )}
     </div>
   );
 };

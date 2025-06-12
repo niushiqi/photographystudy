@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { WorkCard, WorkCardProps } from "./WorkCard";
 import { WorkDetailViewer, WorkDetailProps } from "./WorkDetailViewer";
 
@@ -16,7 +17,7 @@ const masterWorks: (WorkCardProps & {
     title: "Behind the Gare Saint-Lazare",
     photographer: "Henri Cartier-Bresson",
     year: 1932,
-    imageUrl: "/images/showcase/masters/cartier-bresson.jpg",
+    imageUrl: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*t-jfcusMgzvVIRwk1hNhLA.jpeg",
     category: "街头摄影",
     technique: "决定性瞬间",
     description: "这幅作品完美展现了布列松的'决定性瞬间'理念，捕捉到了人物跃过水坑的精确瞬间。",
@@ -52,7 +53,7 @@ const masterWorks: (WorkCardProps & {
     title: "Moonrise, Hernandez, New Mexico",
     photographer: "Ansel Adams",
     year: 1941,
-    imageUrl: "/images/showcase/masters/ansel-adams.jpg",
+    imageUrl: "https://www.anseladams.com/wp-content/uploads/2016/07/1901014-u-3.jpg",
     category: "风景摄影",
     technique: "区域系统",
     description: "这幅经典风景作品展示了安塞尔·亚当斯对于光影和区域系统的精湛运用。",
@@ -87,7 +88,7 @@ const masterWorks: (WorkCardProps & {
     title: "Migrant Mother",
     photographer: "Dorothea Lange",
     year: 1936,
-    imageUrl: "/images/showcase/masters/dorothea-lange.jpg",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Lange-MigrantMother02.jpg",
     category: "纪实摄影",
     technique: "人文纪实",
     description: "这幅大萧条时期的纪实作品成为了20世纪最有影响力的摄影之一，展现了面对困境的人性尊严。",
@@ -121,7 +122,7 @@ const masterWorks: (WorkCardProps & {
     title: "The Falling Soldier",
     photographer: "Robert Capa",
     year: 1936,
-    imageUrl: "/images/showcase/masters/robert-capa.jpg",
+    imageUrl: "https://www.magnumphotos.com/wp-content/uploads/2016/04/cortina.jpg",
     category: "战争摄影",
     technique: "现场记录",
     description: "这幅西班牙内战中的标志性作品捕捉到了士兵被击中倒下的瞬间，展现了战争的残酷现实。",
@@ -149,7 +150,7 @@ const masterWorks: (WorkCardProps & {
     title: "Pepper No. 30",
     photographer: "Edward Weston",
     year: 1930,
-    imageUrl: "/images/showcase/masters/edward-weston.jpg",
+    imageUrl: "https://www.moma.org/media/W1siZiIsIjE0Njc0MSJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4MjAwMFx1MDAzZSJdXQ.jpg?sha=9394d2a7c7483583",
     category: "静物摄影",
     technique: "形式主义",
     description: "这幅静物作品展现了韦斯顿对日常物体形式美的追求，通过精确的光线和构图将普通蔬菜升华为艺术形式。",
@@ -183,7 +184,7 @@ const masterWorks: (WorkCardProps & {
     title: "Young Farmers",
     photographer: "August Sander",
     year: 1914,
-    imageUrl: "/images/showcase/masters/august-sander.jpg",
+    imageUrl: "https://www.moma.org/media/W1siZiIsIjIwOTA0MSJdLFsicCIsImNvbnZlcnQiLCItcXVhbGl0eSA5MCAtcmVzaXplIDIwMDB4MjAwMFx1MDAzZSJdXQ.jpg?sha=7a29a9f7ef408d51",
     category: "肖像摄影",
     technique: "类型学肖像",
     description: "这幅作品是桑德尔'20世纪人物'系列的代表作，展现了他对社会类型学的摄影探索。",

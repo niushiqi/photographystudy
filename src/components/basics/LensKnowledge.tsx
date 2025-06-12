@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Slider } from "@/components/ui/slider";
 
-const LensKnowledge = () => {
+interface LensKnowledgeProps {
+  onComplete?: () => void;
+}
+
+const LensKnowledge: React.FC<LensKnowledgeProps> = ({ onComplete }) => {
   const [focalLength, setFocalLength] = useState(50);
   const [activeLensType, setActiveLensType] = useState<string | null>(null);
   
@@ -191,6 +195,18 @@ const LensKnowledge = () => {
           </div>
         </div>
       </div>
+
+      {/* 完成学习按钮 */}
+      {onComplete && (
+        <div className="mt-6 text-center">
+          <button 
+            onClick={onComplete}
+            className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          >
+            完成学习
+          </button>
+        </div>
+      )}
     </div>
   );
 };
