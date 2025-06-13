@@ -1,0 +1,15 @@
+# wrangler.toml
+name = "photographystudy"
+
+# 设置兼容性日期（必需）
+compatibility_date = "2025-06-13"  # 使用最新日期
+
+# 添加兼容性标志（可选）
+compatibility_flags = [
+  # 其他标志...
+]
+
+# 对于 Pages Functions，需要指定 build 配置
+[build]
+command = "npm run build"
+publish = "public"
