@@ -118,7 +118,7 @@ export function AestheticsFoundation() {
             <IllustratedTheoryCard
               key={index}
               title={image.title}
-              description={image.description}
+              description={image.description!}
               imageSrc={image.src}
               imageAlt={image.alt}
               delay={index + 1}

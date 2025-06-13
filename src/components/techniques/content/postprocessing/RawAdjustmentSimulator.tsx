@@ -62,6 +62,7 @@ export function RawAdjustmentSimulator({
   };
   
   // 应用预设
+  // @ts-ignore
   const applyPreset = (preset) => {
     setExposure(preset.exposure);
     setContrast(preset.contrast);
@@ -140,13 +141,13 @@ export function RawAdjustmentSimulator({
               />
               
               {/* 各种调整叠加层 */}
-              <div className="absolute inset-0" style={overlayStyles.highlights}></div>
+              {/* <div className="absolute inset-0" style={overlayStyles.highlights}></div>
               <div className="absolute inset-0" style={overlayStyles.shadows}></div>
               <div className="absolute inset-0" style={overlayStyles.whites}></div>
               <div className="absolute inset-0" style={overlayStyles.blacks}></div>
               <div className="absolute inset-0" style={overlayStyles.temperature}></div>
               <div className="absolute inset-0" style={overlayStyles.tint}></div>
-              <div className="absolute inset-0" style={overlayStyles.vibrance}></div>
+              <div className="absolute inset-0" style={overlayStyles.vibrance}></div> */}
             </div>
             
             {/* 直方图叠加层 */}
