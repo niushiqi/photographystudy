@@ -6,7 +6,8 @@ compatibility_date = "2025-06-13"  # 使用最新日期
 
 # 添加兼容性标志（可选）
 compatibility_flags = [
-  # 其他标志...
+    "nodejs_compat",  # 启用 Node.js 模块支持
+    # 其他标志...
 ]
 
 # 对于 Pages Functions，需要指定 build 配置
